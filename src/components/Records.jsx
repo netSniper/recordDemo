@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Record from './Record.jsx';
-import axios from 'axios';
+// import axios from 'axios';
+import * as RecordsApi from '../utils/RecordsApi.jsx';
+import RecordForm from './RecordForm.jsx';
 class Records extends Component {
     constructor() {
         super();
@@ -10,8 +12,9 @@ class Records extends Component {
             records: []
         }
     }
+    // https://5a7bb0aefb0574001285055a.mockapi.io/record
     componentDidMount(){
-        axios.get("https://5a7bb0aefb0574001285055a.mockapi.io/record").then(
+        RecordsApi.getAll().then(
             response => this.setState({
                 records: response.data,
                 isLoaded: true
@@ -26,14 +29,14 @@ class Records extends Component {
     }
     render() {
         const { error, isLoaded, records } = this.state;
+        let recordsCoponent;
         if(error){
-            return <div>error:{error.message}</div>
+            recordsCoponent = <div>error:{error.message}</div>
         }else if(!isLoaded){
-           return <div>loading....</div>
+            recordsCoponent = <div>loading....</div>
         }else{
-            return (
+            recordsCoponent = (
                 <div>
-                    <h2>Records</h2>
                     <table className="table table-bordered">
                         <thead>
                             <tr>
@@ -49,7 +52,13 @@ class Records extends Component {
                 </div>
             )
         }
-
+        return (
+            <div>
+                <h2>Records</h2>
+                <RecordForm/>
+                {recordsCoponent}
+            </div>
+        )
     }
 }
 export default Records;
