@@ -6,3 +6,5 @@ export const getAll = ()=>axios.get(`${api}/record`);
 export const create = (body)=>axios.post(`${api}/record`,body);
 //更新某条数据
 export const update = (id,body)=>axios.put(`${api}/record/${id}`,body);
+//删除某条数据
+export const remove = (id)=>axios.delete(`${api}/record/${id}`);

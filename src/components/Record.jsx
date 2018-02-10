@@ -30,6 +30,17 @@ export default class Record extends Component {
             error => console.log(error.message)
           )
     }
+    deleteRecord(event){
+        event.preventDefault();
+        RecordsApi.remove(this.props.record.id).then(
+            response => {
+                this.props.handleDeleteRecord(this.props.record);
+                console.log(response.data);
+            }
+          ).catch(
+            error => console.log(error.message)
+          )
+    }
     recordRow(){
         return(
             <tr>
@@ -38,7 +49,7 @@ export default class Record extends Component {
                 <td>{this.props.record.amount}</td>
                 <td>
                     <button className="btn btn-info" onClick={this.handleToggle.bind(this)}>Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-danger" onClick={this.deleteRecord.bind(this)}>Delete</button>
                 </td>
             </tr>
         )
@@ -51,7 +62,7 @@ export default class Record extends Component {
                 <td><input type="text" ref="amount" className="form-control" defaultValue= {this.props.record.amount}/></td>
                 <td>
                     <button className="btn btn-info" onClick={this.handleEdit.bind(this)}>Update</button>
-                    <button className="btn btn-danger">Cancel</button>
+                    <button className="btn btn-danger" onClick={this.handleToggle.bind(this)}>Cancel</button>
                 </td>
             </tr>
         )
