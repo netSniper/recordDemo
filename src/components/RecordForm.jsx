@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 // import PropTypes from 'prop-types';
+import * as RecordsApi  from '../utils/RecordsApi.jsx';
 export default class RecordForm extends Component {
     constructor(props){
         super(props);
@@ -16,9 +17,24 @@ export default class RecordForm extends Component {
         const {name, value} = event.target;
         this.setState({[name]: value})
     }
+    handleSubmit(event){
+        event.preventDefault();
+        RecordsApi.create(this.state).then(
+            response =>{
+                this.props.onHandleNewRecord(response.data);
+                this.setState({
+                    date:"",
+                    title:"",
+                    amount:""
+                })
+            }
+        ).catch(
+            error =>console.log(error.message)
+        )
+    }
     render(){
         return(
-            <form action="" className="form-inline">
+            <form action="" className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
                 <div className="form-group">
                     <input type="text" onChange={this.handleChange.bind(this)} className="form-control" placeholder="date" name="date" value={this.state.date}/>
                 </div>
